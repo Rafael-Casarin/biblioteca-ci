@@ -17,3 +17,11 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: pytest -v
       - run: ruff check .
+  imagem:
+    needs: testes-unitarios
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build -t biblioteca-ci:test .
+      - run: docker run -d --name biblioteca-ci -p 8000:8000 biblioteca-ci:test
